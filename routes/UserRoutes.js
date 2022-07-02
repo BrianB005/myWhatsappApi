@@ -13,7 +13,7 @@ router.route("/createUser").post(createUser);
 router.route("/allUsers").get(getAllUsers);
 router.route("/getUser").post(getUser);
 
-router.route("/getCurrrentUser").get(AuthenticateUser, getCurrentUser);
+router.route("/getCurrentUser").get(AuthenticateUser, getCurrentUser);
 router.route("/updateUser").put(AuthenticateUser, updateUser);
 
 module.exports = router;

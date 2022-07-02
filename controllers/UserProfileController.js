@@ -25,13 +25,13 @@ const getAllUsers = async (req, res) => {
   res.status(200).json(users);
 };
 const getUser = async (req, res) => {
-  const user = await User.findById(req.body.recipientId, { chats: -1 });
+  const user = await User.findById(req.body.recipient);
 
   res.status(200).json(user);
 };
 
 const getCurrentUser = async (req, res) => {
-  const user = await User.findById(req.user.userId, { chats: -1 });
+  const user = await User.findById(req.user.userId);
 
   res.status(200).json(user);
 };
