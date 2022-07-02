@@ -11,9 +11,9 @@ const router = express.Router();
 
 router.route("/createUser").post(createUser);
 router.route("/allUsers").get(getAllUsers);
-router.route("/getUser").post(AuthenticateUser, getUser);
+router.route("/getUser").post(getUser);
 
-router.route("/getCurrrentUser").post(AuthenticateUser, getCurrentUser);
+router.route("/getCurrrentUser").get(AuthenticateUser, getCurrentUser);
 router.route("/updateUser").put(AuthenticateUser, updateUser);
 
 module.exports = router;
