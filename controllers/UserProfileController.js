@@ -8,7 +8,8 @@ const createUser = async (req, res) => {
   const { phoneNumber } = req.body;
   const UserExists = await User.findOne({ phoneNumber });
   if (UserExists) {
-    throw new CustomError.BadRequestError("This phone Number already exists!");
+    // throw new CustomError.BadRequestError("This phone Number already exists!");
+    await User.findOneAndDelete({ phoneNumber });
   } else {
     const user = await User.create(req.body);
     const tokenPayload = userTokenPayload(user);
@@ -28,6 +29,12 @@ const getUser = async (req, res) => {
 
   res.status(200).json(user);
 };
+
+const getCurrentUser = async (req, res) => {
+  const user = await User.findById(req.user.userId);
+
+  res.status(200).json(user);
+};
 const updateUser = async (req, res) => {
   const user = await User.findById(req.user.userId);
   await user.updateOne(req.body);
@@ -35,4 +42,10 @@ const updateUser = async (req, res) => {
 
   res.status(200).json(user);
 };
-module.exports = { createUser, getAllUsers, getUser, updateUser };
+module.exports = {
+  createUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+  getCurrentUser,
+};
