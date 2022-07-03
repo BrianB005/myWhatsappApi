@@ -20,7 +20,7 @@ const createMessage = async (req, res) => {
       $addToSet: { chats: req.user.userId },
     });
 
-    res.status(200).json( message );
+    res.status(200).json(message);
   } catch (error) {
     res.status(500).json("Error" + error);
   }
@@ -56,15 +56,15 @@ const getAllMessages = async (req, res) => {
 
 const getSingleChat = async (req, res) => {
   const chatMessages = await Message.find({
-    // $or: [
-    //   {
-    $and: [{ recipient: req.body.recipient }, { sender: req.user.userId }],
-    // },
-    // {
-    // $and: [{ recipient: req.user.userId }, { sender: req.body.recipient }],
-    // },
-    // {},
-    // ],
+    $or: [
+      {
+        $and: [{ recipient: req.body.recipient }, { sender: req.user.userId }],
+      },
+      {
+        $and: [{ recipient: req.user.userId }, { sender: req.body.recipient }],
+      },
+      // {},
+    ],
   }).sort("createdAt");
 
   res.status(200).json(chatMessages);

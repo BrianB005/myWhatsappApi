@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+const connectDB = (url) => {
+  mongoose.connect(url);
+};
+
 const Pusher = require("pusher");
 
 const pusher = new Pusher({
@@ -10,23 +14,17 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
-const connectDB = (url) => {
-  mongoose.connect(url);
-};
-
 const db = mongoose.connection;
 
 db.once("open", () => {
-  const messagesCollection = db.collection("message");
-
-  const changeStream = messagesCollection.watch();
-
+  const messageCollection = db.collection("messages");
+  const changeStream = messageCollection.watch();
   changeStream.on("change", (change) => {
-    if (change.operationType == "insert") {
+    if (change.operationType === "insert") {
       const message = change.fullDocument;
       pusher.trigger("messages", "inserted", message);
     } else {
-      console.error("Ooops!Something went wrong");
+      console.log("Error triggering pusher event");
     }
   });
 });
