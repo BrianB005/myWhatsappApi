@@ -24,8 +24,8 @@ db.once("open", () => {
       const message = change.fullDocument;
       console.log(message);
       pusher.trigger("messages", "inserted", "Message created");
-      pusher.sendTo(pusher.user, message);
-      pusher.sendTo(message.recipient, message);
+      // pusher.sendToUser(pusher.user.id, message);
+      pusher.sendToUser(message.recipient, message);
     } else {
       console.log("Error triggering pusher event");
     }
