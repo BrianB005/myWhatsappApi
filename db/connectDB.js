@@ -23,9 +23,7 @@ db.once("open", () => {
     if (change.operationType === "insert") {
       const message = change.fullDocument;
       console.log(message);
-      pusher.trigger("messages", "inserted", "Message created", {
-        socket_id: pusher.connection.socketId,
-      });
+      pusher.trigger("messages", "inserted", "Message created");
       pusher.sendTo(pusher.user, message);
       pusher.sendTo(message.recipient, message);
     } else {
