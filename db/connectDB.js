@@ -22,10 +22,22 @@ db.once("open", () => {
   changeStream.on("change", (change) => {
     if (change.operationType === "insert") {
       const message = change.fullDocument;
-      pusher.trigger("messages", "inserted", message);
+      console.log(message);
+      pusher.trigger("messages", "inserted", "Message created", {
+        socket_id: pusher.connection.socketId,
+      });
+      pusher.sendTo(pusher.user, message);
+      pusher.sendTo(message.recipient, message);
     } else {
       console.log("Error triggering pusher event");
     }
   });
 });
-module.exports = connectDB;
+
+const pusherAuthenticateUser = (req, res) => {
+  const socketId = req.body.socket_id;
+  const user = { id: req.user.userId };
+  const authResponse = pusher.authenticateUser(socketId, user);
+  res.send(authResponse);
+};
+module.exports = { connectDB, pusherAuthenticateUser };

@@ -3,7 +3,7 @@ require("dotenv").config();
 require("express-async-errors");
 
 const express = require("express");
-const connectDB = require("./db/connectDB");
+const { pusherAuthenticateUser, connectDB } = require("./db/connectDB");
 
 const app = express();
 
@@ -18,6 +18,7 @@ app.use(express.json());
 // setting up multer for file uploads
 const multer = require("multer");
 const path = require("path");
+const AuthenticateUser = require("./middlewares/authenticationMiddleware");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
@@ -43,6 +44,9 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/messages", messagesRouter);
+
+// pusher authentication
+app.post("/api/v1/pusher/user-auth", AuthenticateUser, pusherAuthenticateUser);
 
 // error handler middleware
 app.use(ErrorHandlerMiddleware);
