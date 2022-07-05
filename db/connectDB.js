@@ -22,10 +22,8 @@ db.once("open", () => {
   changeStream.on("change", (change) => {
     if (change.operationType === "insert") {
       const message = change.fullDocument;
-      console.log(message);
-      pusher.trigger("messages", "inserted", "Message created");
-      // pusher.sendToUser(pusher.user.id, message);
-      pusher.sendToUser(message.recipient, message);
+      // console.log(message.recipient.toString());
+      pusher.trigger(message.sender.toString(), "inserted", message);
     } else {
       console.log("Error triggering pusher event");
     }
