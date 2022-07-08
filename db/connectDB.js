@@ -24,6 +24,19 @@ db.once("open", () => {
       const message = change.fullDocument;
       // console.log(message.recipient.toString());
       pusher.trigger(message.sender.toString(), "inserted", message);
+      pusher.trigger(message.recipient.toString(), "inserted", message);
+    } else {
+      console.log("Error triggering pusher event");
+    }
+  });
+  const usersCollection = db.collection("users");
+  const changeStream2 = usersCollection.watch();
+  changeStream2.on("change", (change) => {
+    if (change.operationType === "update") {
+      const userId = change.documentKey._id;
+      const updatedField = change.updateDescription.updatedFields;
+
+      pusher.trigger(userId.toString(), "updated", updatedField);
     } else {
       console.log("Error triggering pusher event");
     }

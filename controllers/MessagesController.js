@@ -20,6 +20,8 @@ const createMessage = async (req, res) => {
       $addToSet: { chats: req.user.userId },
     });
 
+    message["createdAt"] = new Date(message.createdAt).getTime();
+
     res.status(200).json(message);
   } catch (error) {
     res.status(500).json("Error" + error);

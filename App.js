@@ -1,14 +1,18 @@
 const cors = require("cors");
 require("dotenv").config();
 require("express-async-errors");
-
+const Status = require("./models/Status");
 const express = require("express");
+const User = require("./models/User");
+
 const { pusherAuthenticateUser, connectDB } = require("./db/connectDB");
 
 const app = express();
 
 const userRouter = require("./routes/UserRoutes");
 const messagesRouter = require("./routes/MessageRoutes");
+
+const statusRouter = require("./routes/StatusRoutes");
 
 // middleware for handlin errors
 const ErrorHandlerMiddleware = require("./middlewares/error_handler_middleware");
@@ -19,24 +23,52 @@ app.use(express.json());
 const multer = require("multer");
 const path = require("path");
 const AuthenticateUser = require("./middlewares/authenticationMiddleware");
+const console = require("console");
+const { log } = require("console");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
   },
   filename: (req, file, cb) => {
-    cb(null, req.body);
+    const extension = file.mimetype.split("/")[1];
+
+    cb(null, `${file.fieldname}-${Date.now()}.${extension}`);
   },
 });
 
 const upload = multer({ storage });
 
-app.post("/api/v1/upload", upload.single("image"), (req, res) => {
-  try {
-    return res.status(200).json("File uploaded successfully");
-  } catch (error) {
-    console.log(error);
+app.post(
+  "/api/v1/uploadProfile",
+  upload.single("image"),
+  AuthenticateUser,
+  async (req, res) => {
+    try {
+      const currentUser = await User.findById(req.user.userId);
+
+      await currentUser.updateOne({
+        profilePic: req.file.filename,
+      });
+      await currentUser.save();
+
+      return res.status(200).json(currentUser);
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
+
+app.post(
+  "/api/v1/uploadStatus",
+  upload.single("image"),
+  AuthenticateUser,
+  async (req, res) => {
+    try {
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 // path for static files
 
@@ -44,6 +76,7 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/messages", messagesRouter);
+app.use("/api/v1/statuses", statusRouter);
 
 // pusher authentication
 app.post("/api/v1/pusher/user-auth", AuthenticateUser, pusherAuthenticateUser);

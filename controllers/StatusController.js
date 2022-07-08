@@ -1,0 +1,55 @@
+const Status = require("../models/Status");
+
+const createTypedStatus = async (req, res) => {
+  req.body.sender = req.user.userId;
+
+  const typedStatus = await Status.create(req.body);
+
+  res.status(200).json(typedStatus);
+};
+const createImageStatus = async (req, res) => {
+  req.body.sender = req.user.userId;
+
+  const imageStatus = await Status.create(req.body);
+
+  res.status(200).json(imageStatus);
+};
+
+const getMyStatuses = async (req, res) => {
+  const myStatuses = await Status.find({ sender: req.user.userId });
+
+  res.status(200).json(myStatuses);
+};
+
+const getFriendsStatuses = async (req, res) => {
+  const savedContactsIds = req.body.contacts;
+  const allStatuses = await Promise.all(
+    savedContactsIds.map((contactId) => {
+      const status = Status.find({ sender: contactId }).sort("-createdAt");
+      // .limit(1);
+
+      return status;
+    })
+  );
+  console.log(allStatuses);
+
+  // const commonStatuses = allStatuses.filter((status) =>
+  //   status[0]?.targetAudience.includes(req.user.userId)
+  // );
+  // console.log(allStatuses);
+  console.log(req.user.userId);
+
+  const commonStatuses = allStatuses.filter((status) => {
+    console.log(status[0]?.title);
+    return status[0]?.targetAudience.includes(req.user.userId);
+  });
+
+  res.status(200).json(commonStatuses);
+};
+
+module.exports = {
+  createTypedStatus,
+  createImageStatus,
+  getMyStatuses,
+  getFriendsStatuses,
+};
