@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const UserSchema = mongoose.Schema(
   {
     phoneNumber: {
@@ -18,12 +17,11 @@ const UserSchema = mongoose.Schema(
     },
     profilePic: {
       type: String,
-      default: "publicimages\1655268718131---icon.png",
+      default: "1655268718131---icon.png",
     },
     chats: {
       type: Array,
       default: [],
-      
     },
   },
   { timestamps: true }
