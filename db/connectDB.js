@@ -7,10 +7,10 @@ const connectDB = (url) => {
 const Pusher = require("pusher");
 
 const pusher = new Pusher({
-  appId: "1432042",
-  key: "36b67a35099f920fa4e2",
-  secret: "594f1f9a98970cfb9ff9",
   cluster: "mt1",
+  appId: process.env.appId,
+  secret: process.env.secret,
+  key: process.env.key,
   useTLS: true,
 });
 
