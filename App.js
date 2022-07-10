@@ -72,7 +72,10 @@ app.post(
 
 // path for static files
 
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use(
+  "/api/v1/images",
+  express.static(path.join(__dirname, "public/images"))
+);
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/messages", messagesRouter);
