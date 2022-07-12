@@ -64,6 +64,12 @@ app.post(
   AuthenticateUser,
   async (req, res) => {
     try {
+      const imageStatus = Status.findById(req.params.statusId);
+      await imageStatus.updateOne({
+        statusImage: req.file.filename,
+      });
+      await imageStatus.save();
+      return res.status(200).json("FIle uploaded successfully");
     } catch (error) {
       console.log(error);
     }
