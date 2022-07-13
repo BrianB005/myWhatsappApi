@@ -24,12 +24,11 @@ const getMyStatuses = async (req, res) => {
 
 const getMyLastStatus = async (req, res) => {
   const myLastStatus = await Status.find({ sender: req.user.userId })
-  .sort("-createdAt")
-  .limit(1);
+    .sort("-createdAt")
+    .limit(1);
 
   res.status(200).json(myLastStatus);
 };
-
 
 const getFriendsStatuses = async (req, res) => {
   const savedContactsIds = req.body.contacts;
@@ -38,8 +37,9 @@ const getFriendsStatuses = async (req, res) => {
       const status = Status.find({ sender: contactId })
         .sort("-createdAt")
         .limit(1)
-        .populate("sender", { _id: 1, phoneNumber: 1, profilePic: 1 });
-      return status[0];
+        .populate("sender", { _id: 1, phoneNumber: 1, profilePic: 1 })
+        .then((data) => data[0]);
+      return status;
     })
   );
 
@@ -101,5 +101,5 @@ module.exports = {
   deleteStatus,
   viewStatus,
   getAStatusViewers,
-  getMyLastStatus
+  getMyLastStatus,
 };
