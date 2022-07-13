@@ -6,6 +6,7 @@ const {
   getAllStatuses,
   getAContactStatuses,
   deleteStatus,
+  getMyLastStatus,
   viewStatus,
   getAStatusViewers,
 } = require("../controllers/StatusController");
