@@ -17,6 +17,9 @@ router.route("/createTyped").post(AuthenticateUser, createTypedStatus);
 router.route("/createImaged").post(AuthenticateUser, createImageStatus);
 
 router.route("/getMyStatuses").get(AuthenticateUser, getMyStatuses);
+
+router.route("/getMyStatuses/last").get(AuthenticateUser, getMyLastStatus);
+
 router.route("/getFriendsStatuses").post(AuthenticateUser, getFriendsStatuses);
 router.route("/deleteStatus/:statusId").delete(AuthenticateUser, deleteStatus);
 router.route("/all").get(getAllStatuses);

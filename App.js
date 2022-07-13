@@ -69,7 +69,7 @@ app.post(
         statusImage: req.file.filename,
       });
       await imageStatus.save();
-      return res.status(200).json("FIle uploaded successfully");
+      return res.status(200).json("File uploaded successfully");
     } catch (error) {
       console.log(error);
     }
