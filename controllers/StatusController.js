@@ -17,7 +17,10 @@ const createImageStatus = async (req, res) => {
 };
 
 const getMyStatuses = async (req, res) => {
-  const myStatuses = await Status.find({ sender: req.user.userId });
+  const myStatuses = await Status.find({ sender: req.user.userId }).populate(
+    "sender",
+    { _id: 1, phoneNumber: 1, profilePic: 1 }
+  );
 
   res.status(200).json(myStatuses);
 };
@@ -25,6 +28,7 @@ const getMyStatuses = async (req, res) => {
 const getMyLastStatus = async (req, res) => {
   const myLastStatus = await Status.find({ sender: req.user.userId })
     .sort("-createdAt")
+    .populate("sender", { _id: 1, phoneNumber: 1, profilePic: 1 })
     .limit(1);
 
   res.status(200).json(myLastStatus);
