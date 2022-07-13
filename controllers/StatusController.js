@@ -28,8 +28,8 @@ const getMyStatuses = async (req, res) => {
 const getMyLastStatus = async (req, res) => {
   const myLastStatus = await Status.find({ sender: req.user.userId })
     .sort("-createdAt")
-    .populate("sender", { _id: 1, phoneNumber: 1, profilePic: 1 })
-    .limit(1);
+    .limit(1)
+    .populate("sender", { _id: 1, phoneNumber: 1, profilePic: 1 });
 
   res.status(200).json(myLastStatus);
 };
@@ -67,8 +67,8 @@ const deleteStatus = async (req, res) => {
 
 const getAContactStatuses = async (req, res) => {
   const contactStatuses = await Status.find({ sender: req.params.contactId })
-    .populate("sender", { _id: 1, phoneNumber: 1, profilePic: 1 })
-    .sort("createdAt");
+    .sort("createdAt")
+    .populate("sender", { _id: 1, phoneNumber: 1, profilePic: 1 });
 
   // contactStatuses.forEach((status) => {
   // const momentsAgo = moment(status.createdAt).fromNow();
