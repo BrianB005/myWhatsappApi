@@ -63,13 +63,16 @@ app.post(
   upload.single("image"),
   AuthenticateUser,
   async (req, res) => {
-    req.body.statusImage = req.file.filename;
-    req.body.sender = req.user.userId;
+    try {
+      req.body.statusImage = req.file.filename;
+      req.body.sender = req.user.userId;
 
-    const uploadedStatus = await Status.create(req.body);
-    uploadedStatus.save();
+      const uploadedStatus = await Status.create(req.body);
 
-    return res.status(200).json(uploadedStatus);
+      return res.status(200).json(uploadedStatus);
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
