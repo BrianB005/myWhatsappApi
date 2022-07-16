@@ -67,16 +67,7 @@ app.post(
     req.body.sender = req.user.userId;
 
     const uploadedStatus = await Status.create(req.body);
-    // try {
-    //   const imageStatus = Status.findById(req.params.statusId);
-    //   await imageStatus.updateOne({
-    //     statusImage: req.file.filename,
-    //   });
-    //   await imageStatus.save();
-    //   return res.status(200).json("File uploaded successfully");
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    uploadedStatus.save();
 
     return res.status(200).json(uploadedStatus);
   }
