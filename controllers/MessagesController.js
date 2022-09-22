@@ -20,8 +20,6 @@ const createMessage = async (req, res) => {
       $addToSet: { chats: req.user.userId },
     });
 
-    message["createdAt"] = new Date(message.createdAt).getTime();
-
     res.status(200).json(message);
   } catch (error) {
     res.status(500).json("Error" + error);
@@ -73,7 +71,7 @@ const getSingleChat = async (req, res) => {
 };
 
 const getAllChats = async (req, res) => {
-  const currentUser = await User.findById(req.user.userId);
+  const currentUser = await User.findById(req.user.userId).select("+chats");
 
   let allChats = await Promise.all(
     currentUser.chats.map((chatPartner) => {
