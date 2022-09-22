@@ -3,7 +3,7 @@ const CustomError = require("../errors");
 
 const StatusCodes = require("http-status-codes");
 const { userTokenPayload, createJWT } = require("../utils/jwt");
-const { findByIdAndUpdate } = require("../models/User");
+
 const createUser = async (req, res) => {
   const { phoneNumber } = req.body;
   const UserExists = await User.findOne({ phoneNumber });

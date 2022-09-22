@@ -1,5 +1,14 @@
 const mongoose = require("mongoose");
 
+const ViewerSchema = mongoose.Schema(
+  {
+    viewer:{
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    }
+  },
+  { timestamps: true }
+);
 const StatusSchema = mongoose.Schema(
   {
     sender: {
@@ -27,11 +36,7 @@ const StatusSchema = mongoose.Schema(
     statusImage: {
       type: String,
     },
-    viewers: {
-      type: Array,
-      default: [],
-      autopopulate: true,
-    },
+    viewers: [ViewerSchema],
     targetAudience: {
       type: Array,
       default: [],

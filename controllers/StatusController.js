@@ -83,15 +83,19 @@ const getAContactStatuses = async (req, res) => {
 const viewStatus = async (req, res) => {
   const viewedStatus = await Status.findById(req.params.statusId);
 
+  const viewer = { viewer: req.user.userId };
   await viewedStatus.updateOne({
-    $addToSet: { viewers: req.user.userId },
+    $addToSet: { viewers: viewer },
   });
 
   res.status(200).json(viewedStatus);
 };
 
 const getAStatusViewers = async (req, res) => {
-  const status = await Status.findById(req.params.statusId);
+  const status = await Status.findById(req.params.statusId).populate(
+    "viewers.viewer",
+    { _id: 0, profilePic: 1, phoneNumber: 1 }
+  );
 
   res.status(200).json(status);
 };

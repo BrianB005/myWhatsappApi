@@ -92,7 +92,6 @@ const getAllChats = async (req, res) => {
         .limit(1)
         .then((data) => {
           data[0].recipient = chatPartner;
-
           return data[0];
         });
       return lastMessage;

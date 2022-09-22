@@ -17,11 +17,12 @@ const UserSchema = mongoose.Schema(
     },
     profilePic: {
       type: String,
-      default: "1655268718131---icon.png",
+      default: "icon.png",
     },
     chats: {
       type: Array,
       default: [],
+      select: false,
     },
   },
   { timestamps: true }
