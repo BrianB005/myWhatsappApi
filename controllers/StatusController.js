@@ -17,10 +17,9 @@ const createImageStatus = async (req, res) => {
 };
 
 const getMyStatuses = async (req, res) => {
-  const myStatuses = await Status.find({ sender: req.user.userId }).populate(
-    "sender",
-    { _id: 1, phoneNumber: 1, profilePic: 1 }
-  );
+  const myStatuses = await Status.find({ sender: req.user.userId })
+    .populate("sender", { _id: 1, phoneNumber: 1, profilePic: 1 })
+    .populate("viewers.viewer", { _id: 0, profilePic: 1, phoneNumber: 1 });
 
   res.status(200).json(myStatuses);
 };

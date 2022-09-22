@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const ViewerSchema = mongoose.Schema(
   {
-    viewer:{
+    viewer: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-    }
+    },
   },
   { timestamps: true }
 );
