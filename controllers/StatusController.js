@@ -83,8 +83,14 @@ const viewStatus = async (req, res) => {
   const viewedStatus = await Status.findById(req.params.statusId);
 
   const viewer = { viewer: req.user.userId };
-  await viewedStatus.updateOne({
-    $addToSet: { viewers: viewer },
+  viewedStatus.viewers.forEach(async (viewer1) => {
+    if (viewer1.viewer === req.user.userId) {
+      return;
+    } else {
+      await viewedStatus.updateOne({
+        $addToSet: { viewers: viewer },
+      });
+    }
   });
 
   res.status(200).json(viewedStatus);
