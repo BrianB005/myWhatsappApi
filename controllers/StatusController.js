@@ -84,7 +84,9 @@ const viewStatus = async (req, res) => {
 
   const viewer = { viewer: req.user.userId };
   viewedStatus.viewers.forEach(async (viewer1) => {
+    console.log(viewer1.viewer);
     if (viewer1.viewer.toString() === req.user.userId) {
+      console.log(viewer1.viewer);
       return;
     } else {
       await viewedStatus.updateOne({
