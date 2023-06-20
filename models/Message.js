@@ -19,9 +19,6 @@ const MessageSchema = mongoose.Schema(
       ref: "User",
       required: [true, "Receiver can't be empty"],
     },
-    imageId: {
-      type: String,
-    },
   },
   { timestamps: true }
 );

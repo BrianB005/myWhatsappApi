@@ -74,7 +74,7 @@ const getAllChats = async (req, res) => {
   const currentUser = await User.findById(req.user.userId).select("+chats");
 
   let allChats = await Promise.all(
-    currentUser.chats.map((chatPartner) => {
+    currentUser?.chats?.map((chatPartner) => {
       const lastMessage = Message.find({
         $or: [
           {
